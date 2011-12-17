@@ -1,9 +1,7 @@
-package
-{
+package {
 import org.flixel.*;
 
-public class HouseState extends FlxState
-{
+public class HouseState extends FlxState {
 	[Embed(source="res/houseBG.png")] public var HouseBG:Class;
 	[Embed(source="res/foo-bg.png")] public var SleepBG:Class;
 // General setup stuff
@@ -11,6 +9,7 @@ public class HouseState extends FlxState
 	public var exit:FlxSprite;
 	public var bed:FlxSprite;
 	public var currentMap:FlxTilemap;
+	public var emitters:FlxGroup;
 
 // Stage 1 house setup
 	[Embed(source="csv/mapCSV_Group1_Map1.csv", mimeType = "application/octet-stream")] public var house1_CSV:Class;
@@ -20,8 +19,7 @@ public class HouseState extends FlxState
 	[Embed(source="csv/mapCSV_Group1_Sleep1.csv", mimeType = "application/octet-stream")] public var sleep1_CSV:Class;
 	public var sleep_1:String = new sleep1_CSV();
 	
-	override public function create():void
-	{
+	override public function create():void	{
 		if (Registry.isNoteStage) {
 			var houseBG:FlxSprite = new FlxSprite(0,0,HouseBG);
 			add(houseBG);
@@ -58,11 +56,14 @@ public class HouseState extends FlxState
 
 		Registry.makeNotes(Registry.houseStage);
 		add(Registry.notes);
-		add(Registry.noteEmitter);
 
 		Registry.makePills(Registry.houseStage);
 		add(Registry.pills);
 
+		//emitter stuff, so we can separately spawn emitters
+		//and still collide them
+		emitters = new FlxGroup();
+		add(emitters);
 		//hud stuff
 		Registry.makeHouseHud();
 		add(Registry.houseHud);
@@ -76,30 +77,47 @@ public class HouseState extends FlxState
 // Check to exit or not.
 		if (Registry.isNoteStage) {
 			if (FlxG.overlap(Registry.player,exit) && FlxG.keys.UP) {
-				FlxG.switchState(new HouseState());
-					Registry.isNoteStage = false;
-					Registry.restart();
+				Registry.cutscene += 1;
+				Registry.isNoteStage = false;
+				FlxG.switchState(new Cutscene());
 			}
 		} else {
 			if (FlxG.overlap(Registry.player,bed) && FlxG.keys.UP) {
-				FlxG.switchState(new HouseState());
+				Registry.cutscene += 1;
+			//decomment below hwen have more stages?
+			//	Registry.houseStage += 1;
 				Registry.isNoteStage = true;
-				Registry.restart();
+				FlxG.switchState(new Cutscene());
 			}
 		}
 		super.update();	
-		FlxG.collide(Registry.noteEmitter,currentMap);
 		FlxG.collide(Registry.player,currentMap);
+		FlxG.collide(emitters,currentMap);
 	}
 
 	public function collectPill(player:Player, pill:Pill):void {
 		pill.getCollected();
 	}
 	public function collectNote(player:Player, note:Note):void {
-		Registry.noteEmitter.at(note);
-		Registry.noteEmitter.start(true,1);
 		note.getCollected();
-		
+		var nrParticles:int = 50;
+		var drag:FlxPoint = new FlxPoint(0,0);
+		var noteEmitter:FlxEmitter = new FlxEmitter(0,0,50);
+		noteEmitter.particleDrag = drag;
+		noteEmitter.gravity = 350;
+		for (var i:int = 0; i < nrParticles; i++) {
+			var particle:FlxParticle = new FlxParticle();
+			particle.makeGraphic(4,4,0xEE000000);
+			particle.lifespan = 1;
+			particle.solid = true;
+			particle.exists = false;
+			noteEmitter.add(particle);
+		}
+		emitters.add(noteEmitter);
+		noteEmitter.at(note);
+		noteEmitter.start(true,1);
+	
+
 	}
 	
 }

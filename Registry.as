@@ -12,18 +12,21 @@ public class Registry {
 // Pills
 	public static var pills:FlxGroup;
 // huds
+
+
 	public static var houseHud:FlxGroup;
+		public static var _anxBar:FlxSprite;
 		public static var pillbar:Pillbar;
 		public static var noteText:FlxText;
 // emitter stuff
-	public static var noteEmitter:FlxEmitter;
 
 	
 	
 // general state
 	public static var isNoteStage:Boolean = true;
 	public static var houseStage:int = 1;
-	public static var notesCollected:Array;
+	public static var notesCollected:Array = new Array(0,0,0,0,0,0);
+	public static var cutscene:int = 0; 
 
 	public function Registry() {
 	}
@@ -31,28 +34,10 @@ public class Registry {
 	public static function init():void {
 		player = new Player;
 		player.x = player.y = 100;
-		notesCollected = new Array(0,0,0);
-		initEmitters();
 		
 	}
 
 //note position data here unless i can do it in dame?
-
-	public static function initEmitters():void {
-		var nrParticles:int = 50;
-		var drag:FlxPoint = new FlxPoint(0,0);
-		noteEmitter = new FlxEmitter(0,0,50);
-		noteEmitter.particleDrag = drag;
-		noteEmitter.gravity = 350;
-		for (var i:int = 0; i < nrParticles; i++) {
-			var particle:FlxParticle = new FlxParticle();
-			particle.makeGraphic(4,4,0xEE000000);
-			particle.lifespan = 1;
-			particle.solid = true;
-			particle.exists = false;
-			noteEmitter.add(particle);
-		}
-	}
 	public static function makeNotes(level:int):void {
 		
 		notes = new FlxGroup();
@@ -90,11 +75,16 @@ public class Registry {
 	}
 	
 	public static function makeHouseHud():void {
+		
 		pillbar = new Pillbar();
+		[Embed(source="res/anxietybar.png")]  var AnxBar:Class;
+		_anxBar = new FlxSprite(pillbar.x-1,pillbar.y-1);
+		_anxBar.loadGraphic(AnxBar,true,true,322,18);
 		noteText = new FlxText(80,20,560,"Notes: "+notesCollected[houseStage].toString()+"/20");
 		noteText.color = 0xFF000000;
 
 		houseHud = new FlxGroup();
+		houseHud.add(_anxBar);
 		houseHud.add(pillbar);
 		houseHud.add(noteText);
 		houseHud.setAll("scrollFactor",new FlxPoint(0,0));

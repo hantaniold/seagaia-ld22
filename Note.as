@@ -26,5 +26,6 @@ public class Note extends FlxSprite{
 		Registry.noteText.text = "Notes: "+Registry.notesCollected[Registry.houseStage].toString()+"/20";
 		kill();
 	}
+
 }
 }

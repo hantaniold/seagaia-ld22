@@ -6,8 +6,8 @@ public class Pillbar extends FlxSprite {
 	public var timeElapsed:Number = 0; //time since last pill
 	public var maxScale:Number = 320;
 	public function Pillbar() {
-		super();
-		makeGraphic(1,16,0xFFFF0000);
+		super(160,10);
+		makeGraphic(1,16,0x88FF0000);
 		scale.x = 20;
 		origin.x = origin.y = 0;
 	}
