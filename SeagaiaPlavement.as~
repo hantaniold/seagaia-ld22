@@ -1,0 +1,15 @@
+package 
+{
+	import org.flixel.*;
+	[SWF(width="640", height="480", backgroundColor="#AAAAAA")]
+	
+	public class SeagaiaPlavement extends FlxGame
+	{
+		public function SeagaiaPlavement()
+		{
+			Registry.init();
+			super(640,480,HouseState);
+		}
+	}
+
+}

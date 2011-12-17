@@ -1,0 +1,104 @@
+ALONE
+
+-break shit
+...
+?
+
+..
+
+BRAINSTORMIGN
+
+..
+
+you've been transported to the past and...
+...you're trapped. all by yourself! no way back. BUT it's the year 1990..
+
+...and you're in california!
+
+...and you're a fan of the hit indie rock band from the 90s, "Pavement" (not pavement but you know something close?)
+
+all you have in your pants is a couple hundred bucks and uh...slanted and enchanted.
+
+you decide the only way to survive is to copy them.
+
+but first you must assassinate the members of "Pavement"!
+
+...
+
+okay
+
+....
+
+1. just one stage. collect notes.?? AND ANXIETY MEDS or you get too angsty from being alone and...die. via window. 
+2. use notes to defeat pavement?
+
+OKAY 
+
+
+
+TO-DO:
+
+-anxiety med implementation (just a timer or whatever)
+	*controls get worse as need more stuff
+-platforming stuff (should be easy)
+-clever way of battling pavement?
+-MAKE SCREEN WIDE ENOUGH
+-note meter!
+
+low priority:
+-music (renditions of pavemnt songs?)
+-graphics
+-intro story...
+
+
+class: notes
+
+collect X of these in some time
+easy enough
+
+20 notes in a level - fill a note-shaped meter composed of squares. fills them sequentially or with reference to whatever it is 
+
+can make notes play certain parts of the audio file?
+
+after getting all note play whole song
+
+transition between songs when collecting if anxiety too high
+
+
+
+puzzle-like thing for "assassinating" or converting members of pavement IN THEIR SLEEP. way of how well you do this influences how well they play?
+
+DITCHPORK reviews your music depending how many notes you collect...different reviews?
+
+Songs:
+
+-Intro/story theme
+-House stage
+-Anxious
+-Assassination
+-Ending/review
+-Victory (stage)
+-Death
+-Fake pavement song
+
+
+
+Sounds:
+
+-Jump
+-Grab onto edge
+-Collect note
+-pill get
+-anxiety sound?
+-assassination noise
+-open door (exit)
+-press space during story segments
+
+Graphics:
+
+-House tileset
+-Night background
+-Day background
+
+
+
