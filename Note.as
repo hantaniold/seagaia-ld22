@@ -9,8 +9,8 @@ public class Note extends FlxSprite{
 
 	public function Note(_x:int, _y:int,_id:int) {
 		super();
-		x = _x;
-		y = _y;	
+		x = 16*_x;
+		y = 16*_y;	
 		id = _id;
 
 	//randomly pick what note to look like

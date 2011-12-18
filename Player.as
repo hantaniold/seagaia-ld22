@@ -53,6 +53,7 @@ public class Player extends FlxSprite
 
 	public function death():void {
 		if (FlxG.keys.Y) { 
+			Registry.nrDeaths += 1;
 			Registry.notesCollected[Registry.houseStage] = 0;
 			FlxG.switchState(new HouseState());
 			Registry.init();

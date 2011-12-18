@@ -7,6 +7,7 @@ package
 	{
 		public function SeagaiaPlavement()
 		{
+//			super(640,480,Intro);
 			super(640,480,HouseState);
 			Registry.init();
 		}
