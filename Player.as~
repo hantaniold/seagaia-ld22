@@ -23,10 +23,9 @@ public class Player extends FlxSprite
 	override public function update():void {
 		if (state == 1) {
 			death();
-		} else { 
+		} else if (state == 0){ 
 			normal();
-		} 	
-	}
+		} 	}
 
 	public function normal():void {
 		if (FlxG.keys.LEFT) {
@@ -61,7 +60,7 @@ public class Player extends FlxSprite
 		}
 
 		if (FlxG.keys.Y) { 
-			deathJingle.kill();
+			deathJingle.volume = 0;
 			Registry.nrDeaths += 1;
 			Registry.notesCollected[Registry.houseStage] = 0;
 			FlxG.switchState(new HouseState());

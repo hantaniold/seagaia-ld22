@@ -22,28 +22,41 @@ public class HouseState extends FlxState {
 		public var exTimer:Number = 0; //Timers for disappear/flash
 		public var exFlash:Number = 0;
 	
+	public var isReady:Boolean = false; //Must hit x at begin of stage
+	
 /** Import the CSV map files. **/
 	[Embed(source="csv/mapCSV_Group1_Map1.csv", mimeType = "application/octet-stream")] public var house1_CSV:Class;
-	public var house_1:String = new house1_CSV();
-	
-	[Embed(source="csv/mapCSV_Group1_Sleep1.csv", mimeType = "application/octet-stream")] public var sleep1_CSV:Class;
-	public var sleep_1:String = new sleep1_CSV();
-	
 	[Embed(source="csv/mapCSV_Group1_Map2.csv", mimeType = "application/octet-stream")] public var house2_CSV:Class;
+	[Embed(source="csv/mapCSV_Group1_Map3.csv", mimeType = "application/octet-stream")] public var house3_CSV:Class;
+//	[Embed(source="csv/mapCSV_Group1_Map4.csv", mimeType = "application/octet-stream")] public var house4_CSV:Class;
+//	[Embed(source="csv/mapCSV_Group1_Map5.csv", mimeType = "application/octet-stream")] public var house5_CSV:Class;
+	[Embed(source="csv/mapCSV_Group1_Sleep1.csv", mimeType = "application/octet-stream")] public var sleep1_CSV:Class;
+	[Embed(source="csv/mapCSV_Group1_Sleep2.csv", mimeType = "application/octet-stream")] public var sleep2_CSV:Class;
+	[Embed(source="csv/mapCSV_Group1_Sleep3.csv", mimeType = "application/octet-stream")] public var sleep3_CSV:Class;
+//	[Embed(source="csv/mapCSV_Group1_Sleep4.csv", mimeType = "application/octet-stream")] public var sleep4_CSV:Class;
+//	[Embed(source="csv/mapCSV_Group1_Sleep5.csv", mimeType = "application/octet-stream")] public var sleep5_CSV:Class;
+	public var house_1:String = new house1_CSV();
 	public var house_2:String = new house2_CSV();
-
+	public var house_3:String = new house3_CSV();
+//	public var house_4:String = new house4_CSV();
+//	public var house_5:String = new house5_CSV();
+	public var sleep_1:String = new sleep1_CSV();
+	public var sleep_2:String = new sleep2_CSV();
+	public var sleep_3:String = new sleep3_CSV();
+//	public var sleep_4:String = new sleep4_CSV();
+//	public var sleep_5:String = new sleep5_CSV();
 	override public function create():void	{
 		
 		//for debuggin/testing
-		Registry.isNoteStage = true;
-		Registry.houseStage = 2;
+		Registry.isNoteStage = false;
+		Registry.houseStage = 3;
 
 		if (Registry.isNoteStage) {
 			var houseBG:FlxSprite = new FlxSprite(0,0,HouseBG);
 			houseBG.scrollFactor.x = houseBG.scrollFactor.y = 0;
 			add(houseBG);
 		} else {
-			var sleepBG:FlxSprite = new FlxSprite(0,0,SleepBG);
+			var sleepBG:FlxSprite = new FlxSprite(0,0,HouseBG);
 			sleepBG.scrollFactor.x = sleepBG.scrollFactor.y = 0;
 			add(sleepBG);
 		}
@@ -66,30 +79,73 @@ public class HouseState extends FlxState {
 		if (Registry.houseStage == 1) {
 			if (Registry.isNoteStage) {
 				exit.exists = true;
-				exit.x = 11*16;
-				exit.y = 27*16;
+				exit.x = 11*16; exit.y = 27*16;
 				currentMap.loadMap(house_1,HouseTiles,16,16);
-				Registry.player.x = 9*16;
-				Registry.player.y = 26*16;
+				Registry.player.x = 9*16; Registry.player.y = 26*16;
 			} else {
 				bed.exists = true;
-				bed.x = 11*16;
-				bed.y = 19*16;
+				bed.x = 11*16; bed.y = 19*16;
 				currentMap.loadMap(sleep_1,HouseTiles,16,16);
-				Registry.player.x =2*16;
-				Registry.player.y = 12*16;
+				Registry.player.x =2*16; Registry.player.y = 12*16;
 			}
 		} else if (Registry.houseStage == 2) {
 			if (Registry.isNoteStage) {
 				exit.exists = true;
-				exit.x = 16;
-				exit.y = 27*16;	
+				exit.x = 16; exit.y = 27*16;	
 				currentMap.loadMap(house_2,HouseTiles,16,16);
-				Registry.player.x = 3*16;
-				Registry.player.y = 27*16;
+				Registry.player.x = 3*16; Registry.player.y = 27*16;
 				FlxG.camera.setBounds(0,0,800,480,true);
+			} else {
+				bed.exists = true;
+				bed.x = 16*16; bed.y = 16*9;
+				currentMap.loadMap(sleep_2,HouseTiles,16,16);
+				Registry.player.x = 7*16; Registry.player.y = 37*16;
+				FlxG.camera.setBounds(0,0,640,640,true);
 			}
-		}
+		} else if (Registry.houseStage == 3) {
+			if (Registry.isNoteStage) {
+				exit.exists = true;
+				exit.x = 35*16; exit.y = 19*16;	
+				currentMap.loadMap(house_3,HouseTiles,16,16);
+				Registry.player.x = 1*16; Registry.player.y = 6*16;
+				FlxG.camera.setBounds(0,0,960,640,true);
+			} else {
+				bed.exists = true;
+				bed.x = 68*16; bed.y = 16*7;
+				currentMap.loadMap(sleep_3,HouseTiles,16,16);
+				Registry.player.x = 1*16; Registry.player.y = 37*16;
+				FlxG.camera.setBounds(0,0,70*16,640,true);
+			}
+		}/** else if (Registry.houseStage == 4) {
+			if (Registry.isNoteStage) {
+				exit.exists = true;
+				exit.x = 16; exit.y = 27*16;	
+				currentMap.loadMap(house_4,HouseTiles,16,16);
+				Registry.player.x = 3*16; Registry.player.y = 27*16;
+				FlxG.camera.setBounds(0,0,800,480,true);
+			} else {
+				bed.exists = true;
+				bed.x = 16*16; bed.y = 16*9;
+				currentMap.loadMap(sleep_4,HouseTiles,16,16);
+				Registry.player.x = 7*16; Registry.player.y = 37*16;
+				FlxG.camera.setBounds(0,0,640,640,true);
+			}
+else if (Registry.houseStage == 5) {
+			if (Registry.isNoteStage) {
+				exit.exists = true;
+				exit.x = 16; exit.y = 27*16;	
+				currentMap.loadMap(house_5,HouseTiles,16,16);
+				Registry.player.x = 3*16; Registry.player.y = 27*16;
+				FlxG.camera.setBounds(0,0,800,480,true);
+			} else {
+				bed.exists = true;
+				bed.x = 16*16; bed.y = 16*9;
+				currentMap.loadMap(sleep_5,HouseTiles,16,16);
+				Registry.player.x = 7*16; Registry.player.y = 37*16;
+				FlxG.camera.setBounds(0,0,640,640,true);
+			}**/
+
+
 		add(currentMap);
 		
 
@@ -117,17 +173,19 @@ public class HouseState extends FlxState {
 		
 		squares = new FlxGroup();
 		add(squares);
-
+//the below should *realy* bein teh hud but whatever
 		fgFade.makeGraphic(640,480,0xFF000000);
 		fgFade.exists = true;
 		fgFade.scrollFactor = new FlxPoint(0,0);
 		add(fgFade);
 	
 		deathTextBorder.exists = false;
-		deathTextBorder.makeGraphic(200,300,0xCC00FF00);
+		deathTextBorder.makeGraphic(200,200,0xCC00FF00);
+		deathTextBorder.scrollFactor = new FlxPoint(0,0)
 		add(deathTextBorder);
 		deathText.exists = false;
 		deathText.size = 12;
+		deathText.scrollFactor = new FlxPoint(0,0);
 		add(deathText);
 	
 		//DEBUG TEXT
@@ -135,11 +193,16 @@ public class HouseState extends FlxState {
 		dt.exists = true;
 		dt.color = 0x000000;
 		add(dt);
+		
+		
 	}
 
 	override public function update():void
 	{
-	
+				
+		//update timer text
+		Registry.stageTime += FlxG.elapsed;
+		Registry.timeText.text = "Elapsed Time: "+Registry.stageTime.toFixed(2).toString()+"s";
 		//fgfade on anx. bar.
 		if (Registry.pillbar.scale.x > 160) {
 			fgFade.alpha = (Registry.pillbar.scale.x - 160) / 240.0;
@@ -152,9 +215,6 @@ public class HouseState extends FlxState {
 		
 		if (FlxG.keys.justPressed("D")) 
 			dt.exists = !dt.exists;	
-		//update timer text
-		Registry.stageTime += FlxG.elapsed;
-		Registry.timeText.text = "Elapsed Time: "+Registry.stageTime.toFixed(2).toString()+"s";
 		//pillbar check for death
 		if (Registry.pillbar.scale.x > 319)
 			deathText.exists = deathTextBorder.exists = true;
@@ -173,6 +233,7 @@ public class HouseState extends FlxState {
 			if (FlxG.overlap(Registry.player,exit) && FlxG.keys.UP) {
 				Registry.cutscene += 1;
 				Registry.isNoteStage = false;
+				Pillbar.dangerSound.volume = 0;
 				FlxG.switchState(new Cutscene());
 			}
 		} else {
@@ -205,6 +266,7 @@ public class HouseState extends FlxState {
 		}
 		
 	}
+
 
 //do silly things like emit text, particles, shake...
 	public function collectPill(player:Player, pill:Pill):void {

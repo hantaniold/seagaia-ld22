@@ -99,10 +99,25 @@ public class Registry {
 			xs = new Array( 3 ,6 ,9,12,15,22,34,31,32,48,36,48,36,47,48, 3,17,23,28,11);
 			ys = new Array(22,21,22,21,22,11,15,22,28,26,23,19,15, 3, 3, 7, 2, 2, 2, 2);
 		}
+
+		if (level == 3) {
+			xs = new Array(53,46, 7,12,36,29,23,10,11,18,25,33, 1,18,24,52,54,39,2,2);
+			ys = new Array( 9,11,10,10,11,19,19,19,27,27,27,27,35,35,35,32,27,22,34,35);
+		}
+/**
+		if (level == 3) {
+			xs = new Array();
+			ys = new Array();
+		}
+		if (level == 3) {
+			xs = new Array();
+			ys = new Array();
+		}
+**/
+
 		for(var i:int = 0; i < xs.length; i++) {
 			mn(xs[i],ys[i],i);
 		}
-		Debug.trace("Made notes");
 	}
 //i do the x16 scaling in the note class
 	public static function mn(x:int,y:int,id:int):void {
@@ -121,7 +136,30 @@ public class Registry {
 		} else if (level == 2 && isNoteStage) {
 			xs = new Array(26,38,47,10);
 			ys = new Array(20,28,11,7);
-		}
+		} else if (level == 2) {
+			xs = new Array(7,22,34,29);
+			ys = new Array(16,31,18,26);
+		} else if (level == 3 && isNoteStage) {
+			xs = new Array(49,35,16,46,49);
+			ys = new Array(13,17,35,30,27);
+		} else if (level == 3) {
+			xs = new Array(53,56,32,61,37,17,5);
+			ys = new Array(35,25,22,21,18,21,8);
+		} /** else if (level == 4 && isNoteStage) {
+			xs = new Array();
+			ys = new Array();
+		} else if (level == 4) {
+			xs = new Array();
+			ys = new Array();
+		} else if (level == 5 && isNoteStage) {
+			xs = new Array();
+			ys = new Array();
+		} else if (level == 5) {
+			xs = new Array();
+			ys = new Array();
+		}**/
+
+
 		
 		for (var i:int = 0; i< xs.length; i++) {
 			mp(xs[i],ys[i]);

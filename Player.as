@@ -23,10 +23,11 @@ public class Player extends FlxSprite
 	override public function update():void {
 		if (state == 1) {
 			death();
-		} else { 
+		} else if (state == 0){ 
 			normal();
 		} 	
 	}
+
 
 	public function normal():void {
 		if (FlxG.keys.LEFT) {

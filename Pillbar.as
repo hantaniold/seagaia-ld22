@@ -5,7 +5,7 @@ public class Pillbar extends FlxSprite {
 	public var timeToFull:Number = 12; //time in sec for bar to empty
 	public var timeElapsed:Number = 0; //time since last pill
 	public var maxScale:Number = 320;
-	public var dangerSound:FlxSound = new FlxSound();
+	public static var dangerSound:FlxSound = new FlxSound();
 	public function Pillbar() {
 		super(160,10);
 		dangerSound.loadStream("res/closetodeath.mp3",false);
