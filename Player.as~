@@ -4,15 +4,18 @@ import org.flixel.*;
 
 public class Player extends FlxSprite
 {
+	[Embed(source="res/player.png")] public var PlayerSprite:class;
 
 	public var state:int = 0; //Normal state. 1 = death
 	public var jumpState:int = 0; //1 = has jumped once
 	public var deathJingle:FlxSound = new FlxSound();
 	public function Player() {
 		super();
+		loadGraphic(PlayerSprite,true,true,15,30);
+		addAnimation("walk",[0,1],5);
+		addAnimation("stop",[0],5);
 		deathJingle.loadStream("res/deathjingle.mp3",false);
 		deathJingle.alive = false;
-		makeGraphic(15,30,0xff998833);
 		maxVelocity.y = 200;
 		velocity.y = 100;
 		acceleration.y = 650;
@@ -25,14 +28,21 @@ public class Player extends FlxSprite
 			death();
 		} else if (state == 0){ 
 			normal();
-		} 	}
+		} 	
+	}
+
 
 	public function normal():void {
 		if (FlxG.keys.LEFT) {
+			scale.x = -1
+			play("walk");
 			velocity.x = -120;
 		} else if (FlxG.keys.RIGHT) {
+			scale.x = 1;
+			play("walk");
 			velocity.x = 120;
 		} else {
+			play("still");
 			velocity.x = 0;
 		}
 
@@ -55,6 +65,10 @@ public class Player extends FlxSprite
 
 	public function death():void {
 		if (!deathJingle.alive) {
+			HouseState.houseSong.volume = 0;
+			var deathSound:FlxSound = new FlxSound();
+			deathSound.loadStream("res/deathsound.mp3",false);
+			deathSound.play();
 			deathJingle.play();
 			deathJingle.alive = true;
 		}

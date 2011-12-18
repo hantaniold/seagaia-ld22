@@ -1,6 +1,5 @@
 package {
 import org.flixel.*;
-import com.hexagonstar.util.debug.Debug;
 
 public class HouseState extends FlxState {
 	[Embed(source="res/houseBG.png")] public var HouseBG:Class;
@@ -8,6 +7,8 @@ public class HouseState extends FlxState {
 	[Embed(source="res/door.png")] public var Door:Class;
 // General setup stuff
 	[Embed(source="res/houseTiles.png")] public var HouseTiles:Class;
+	public static var houseSong:FlxSound = new FlxSound();
+	public var bloop:FlxSound = new FlxSound();
 	public var exit:FlxSprite; //Exit for day stages
 	public var bed:FlxSprite; //band member location for night stages
 	public var currentMap:FlxTilemap;
@@ -23,33 +24,38 @@ public class HouseState extends FlxState {
 		public var exFlash:Number = 0;
 	
 	public var isReady:Boolean = false; //Must hit x at begin of stage
-	
+
+	public var pause:FlxGroup;
+	public var pauseScreen:FlxSprite;
+	public var pauseText:FlxText;
+	public var doAutoPause:Boolean;	
 /** Import the CSV map files. **/
 	[Embed(source="csv/mapCSV_Group1_Map1.csv", mimeType = "application/octet-stream")] public var house1_CSV:Class;
 	[Embed(source="csv/mapCSV_Group1_Map2.csv", mimeType = "application/octet-stream")] public var house2_CSV:Class;
 	[Embed(source="csv/mapCSV_Group1_Map3.csv", mimeType = "application/octet-stream")] public var house3_CSV:Class;
-//	[Embed(source="csv/mapCSV_Group1_Map4.csv", mimeType = "application/octet-stream")] public var house4_CSV:Class;
+	[Embed(source="csv/mapCSV_Group1_Map4.csv", mimeType = "application/octet-stream")] public var house4_CSV:Class;
 //	[Embed(source="csv/mapCSV_Group1_Map5.csv", mimeType = "application/octet-stream")] public var house5_CSV:Class;
 	[Embed(source="csv/mapCSV_Group1_Sleep1.csv", mimeType = "application/octet-stream")] public var sleep1_CSV:Class;
 	[Embed(source="csv/mapCSV_Group1_Sleep2.csv", mimeType = "application/octet-stream")] public var sleep2_CSV:Class;
 	[Embed(source="csv/mapCSV_Group1_Sleep3.csv", mimeType = "application/octet-stream")] public var sleep3_CSV:Class;
-//	[Embed(source="csv/mapCSV_Group1_Sleep4.csv", mimeType = "application/octet-stream")] public var sleep4_CSV:Class;
+	[Embed(source="csv/mapCSV_Group1_Sleep4.csv", mimeType = "application/octet-stream")] public var sleep4_CSV:Class;
 //	[Embed(source="csv/mapCSV_Group1_Sleep5.csv", mimeType = "application/octet-stream")] public var sleep5_CSV:Class;
 	public var house_1:String = new house1_CSV();
 	public var house_2:String = new house2_CSV();
 	public var house_3:String = new house3_CSV();
-//	public var house_4:String = new house4_CSV();
+	public var house_4:String = new house4_CSV();
 //	public var house_5:String = new house5_CSV();
 	public var sleep_1:String = new sleep1_CSV();
 	public var sleep_2:String = new sleep2_CSV();
 	public var sleep_3:String = new sleep3_CSV();
-//	public var sleep_4:String = new sleep4_CSV();
+	public var sleep_4:String = new sleep4_CSV();
 //	public var sleep_5:String = new sleep5_CSV();
 	override public function create():void	{
-		
+		houseSong.loadStream("res/housetheme.mp3",true);	
+		houseSong.play();
 		//for debuggin/testing
-		Registry.isNoteStage = false;
-		Registry.houseStage = 3;
+		//Registry.isNoteStage = false;
+		//Registry.houseStage = 4;
 
 		if (Registry.isNoteStage) {
 			var houseBG:FlxSprite = new FlxSprite(0,0,HouseBG);
@@ -116,21 +122,21 @@ public class HouseState extends FlxState {
 				Registry.player.x = 1*16; Registry.player.y = 37*16;
 				FlxG.camera.setBounds(0,0,70*16,640,true);
 			}
-		}/** else if (Registry.houseStage == 4) {
+		} else if (Registry.houseStage == 4) {
 			if (Registry.isNoteStage) {
 				exit.exists = true;
-				exit.x = 16; exit.y = 27*16;	
+				exit.x = 16; exit.y = 47*16;	
 				currentMap.loadMap(house_4,HouseTiles,16,16);
-				Registry.player.x = 3*16; Registry.player.y = 27*16;
-				FlxG.camera.setBounds(0,0,800,480,true);
+				Registry.player.x = 21*16; Registry.player.y = 22*16;
+				FlxG.camera.setBounds(0,0,800,800,true);
 			} else {
 				bed.exists = true;
-				bed.x = 16*16; bed.y = 16*9;
+				bed.x = 12*16; bed.y = 16*23;
 				currentMap.loadMap(sleep_4,HouseTiles,16,16);
-				Registry.player.x = 7*16; Registry.player.y = 37*16;
-				FlxG.camera.setBounds(0,0,640,640,true);
+				Registry.player.x = 6*16; Registry.player.y = 27*16;
+				FlxG.camera.setBounds(0,0,80*16,480,true);
 			}
-else if (Registry.houseStage == 5) {
+		} /**else if (Registry.houseStage == 5) {
 			if (Registry.isNoteStage) {
 				exit.exists = true;
 				exit.x = 16; exit.y = 27*16;	
@@ -194,15 +200,65 @@ else if (Registry.houseStage == 5) {
 		dt.color = 0x000000;
 		add(dt);
 		
-		
+		//PAUSE STUFF
+		pause = new FlxGroup();
+		pauseText = new FlxText(24,24,640-48);
+		pauseText.text = "I pause the game before you start for convenience! Press P to unpause - from now on if you pause it will display instructions! Have fun. If this message annoys you, you can press Q to turn it off for subsequent deaths...";
+		pauseText.size = 16;
+		pauseScreen = new FlxSprite(16,16);
+		pauseScreen.makeGraphic(640-32,480-32,0x88aaaaaa);
+		pause.add(pauseScreen);
+		pause.add(pauseText);
+		pause.setAll("scrollFactor",new FlxPoint(0,0));
+		pause.exists = false;
+//only force showing of it on first stage with no deaths, afterwards
+//autopause option is controlled by player
+		if (Registry.houseStage == 1 && Registry.nrDeaths == 0 && Registry.isNoteStage) {
+			Registry.doAutoPause = true;
+			pause.exists = true;
+		}
+		add(pause);
 	}
 
 	override public function update():void
 	{
 				
+		if (FlxG.paused) {
+			pause.update();
+		} else {
+			updateGame();
+		}
+		if (FlxG.keys.justPressed("Q"))  {
+			Registry.doAutoPause = !Registry.doAutoPause;
+			bloop.loadStream("res/bloop.mp3",false);
+			bloop.play();
+		}
+
+		if (FlxG.keys.justPressed("P")) {
+			bloop.loadStream("res/bloop.mp3",false);
+			bloop.play();
+			if (!FlxG.paused) {
+				FlxG.paused = true;
+				pause.exists = true;
+				pauseText.text = "Ah, this is the tutorial! You will play in two types of stages - \"Note\" stages and \"Sleep\" stages. \n X jumps, P pauses, arrow keys move. \n The stage alternate - note - sleep - note, etc. In Note stages, the goal is to collect as many notes as you can without dying (In order to...make the song, or something), and reach the exit. Unfortunately your anxiety bar will rise as you collect the notes, so you should keep an eye out for anxiety disorder meds...or else you'll die. \n \n In Sleep stages, just make your way as fast as possible to the bed, and press UP to beat up and convert the member of Davement!\n\n Finish sleep stages quickly, and collect many notes on note stages to vary what the ending is like. Collect NO notes for a surprise :) maybe...";
+			} else {
+				FlxG.paused = false;
+				pause.exists = false;
+			}
+		}
+	}
+		
+	public function updateGame():void {
+//this serves as a cheap way to get the player to see where they spawn at.
+//which can reduce frustration. except for the pressing P every time they die but whatevs
+		if (Registry.stageTime == 0 && Registry.doAutoPause)  {
+			Registry.stageTime = 0.001;
+			FlxG.paused = true;
+			pause.exists = true;
+		}
 		//update timer text
 		Registry.stageTime += FlxG.elapsed;
-		Registry.timeText.text = "Elapsed Time: "+Registry.stageTime.toFixed(2).toString()+"s";
+		Registry.timeText.text = "Elapsed Time: "+Registry.stageTime.toFixed(2).toString()+"s"+"\nAutopause On: "+Registry.doAutoPause.toString();
 		//fgfade on anx. bar.
 		if (Registry.pillbar.scale.x > 160) {
 			fgFade.alpha = (Registry.pillbar.scale.x - 160) / 240.0;
@@ -234,14 +290,22 @@ else if (Registry.houseStage == 5) {
 				Registry.cutscene += 1;
 				Registry.isNoteStage = false;
 				Pillbar.dangerSound.volume = 0;
+				houseSong.volume = 0;
+				
 				FlxG.switchState(new Cutscene());
 			}
 		} else {
 			if (FlxG.overlap(Registry.player,bed) && FlxG.keys.UP) {
+				Registry.times[Registry.houseStage] = Registry.stageTime;
 				Registry.cutscene += 1;
 				Registry.houseStage += 1;
 				Registry.isNoteStage = true;
-				FlxG.switchState(new Cutscene());
+				houseSong.volume = 0;
+				if (Registry.houseStage == 5) {
+					FlxG.switchState(new Ending());
+				} else {
+					FlxG.switchState(new Cutscene());
+				}	
 			}
 		}
 		super.update();	
