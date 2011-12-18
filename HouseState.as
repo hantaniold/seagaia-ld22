@@ -3,7 +3,8 @@ import org.flixel.*;
 
 public class HouseState extends FlxState {
 	[Embed(source="res/houseBG.png")] public var HouseBG:Class;
-	[Embed(source="res/foo-bg.png")] public var SleepBG:Class;
+	[Embed(source="res/sleepBG.png")] public var SleepBG:Class;
+	[Embed(source="res/bed.png")] public var Bed:Class;
 	[Embed(source="res/door.png")] public var Door:Class;
 	[Embed(source="res/housetheme.mp3")] public var HouseSong:Class;
 	public static var houseSong:FlxSound = new FlxSound();
@@ -63,7 +64,7 @@ public class HouseState extends FlxState {
 			houseBG.scrollFactor.x = houseBG.scrollFactor.y = 0;
 			add(houseBG);
 		} else {
-			var sleepBG:FlxSprite = new FlxSprite(0,0,HouseBG);
+			var sleepBG:FlxSprite = new FlxSprite(0,0,SleepBG);
 			sleepBG.scrollFactor.x = sleepBG.scrollFactor.y = 0;
 			add(sleepBG);
 		}
@@ -75,12 +76,12 @@ public class HouseState extends FlxState {
 		exit = new FlxSprite();
 		exit.exists = false;
 		exit.loadGraphic(Door,true,true,16,32);
-		exit.addAnimation("door",[0,1],10);
+		exit.addAnimation("door",[0],10);
 		exit.play("door");
 		add(exit);
 		bed = new FlxSprite();
 		bed.exists =false;
-		bed.makeGraphic(32,16,0xFFABABAB);
+		bed.loadGraphic(Bed);
 		add(bed);
 		currentMap = new FlxTilemap();
 		if (Registry.houseStage == 1) {
@@ -199,7 +200,7 @@ public class HouseState extends FlxState {
 		dt.scrollFactor = new FlxPoint(0,0);
 		dt.exists = true;
 		dt.color = 0x000000;
-		add(dt);
+		//add(dt);
 		
 		//PAUSE STUFF
 		pause = new FlxGroup();

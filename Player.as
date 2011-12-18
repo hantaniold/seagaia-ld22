@@ -5,17 +5,21 @@ import org.flixel.*;
 public class Player extends FlxSprite
 {
 	[Embed(source="res/player.png")] public var PlayerSprite:Class;
-
+	
+	[Embed(source="res/deathjingle.mp3")] public var DeathJingle:Class;
+	[Embed(source="res/deathsound.mp3")] public var DeathSound:Class;
 	public var state:int = 0; //Normal state. 1 = death
 	public var jumpState:int = 0; //1 = has jumped once
 	public var deathJingle:FlxSound = new FlxSound();
+	public var deathSound:FlxSound = new FlxSound();
 	public function Player() {
 		super();
 		loadGraphic(PlayerSprite,true,true,15,30);
 		addAnimation("walk",[0,1],5);
 		addAnimation("stop",[0],5);
-		deathJingle.loadStream("res/deathjingle.mp3",false);
+		deathJingle.loadEmbedded(DeathJingle,false);
 		deathJingle.alive = false;
+		deathSound.loadEmbedded(DeathSound,false);
 		maxVelocity.y = 200;
 		velocity.y = 100;
 		acceleration.y = 650;
@@ -66,8 +70,6 @@ public class Player extends FlxSprite
 	public function death():void {
 		if (!deathJingle.alive) {
 			HouseState.houseSong.volume = 0;
-			var deathSound:FlxSound = new FlxSound();
-			deathSound.loadStream("res/deathsound.mp3",false);
 			deathSound.play();
 			deathJingle.play();
 			deathJingle.alive = true;

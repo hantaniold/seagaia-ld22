@@ -142,7 +142,7 @@ public class Registry {
 			xs = new Array(7,22,34,29);
 			ys = new Array(16,31,18,26);
 		} else if (level == 3 && isNoteStage) {
-			xs = new Array(49,35,16,46,49);
+			xs = new Array(49,35,16,42,49);
 			ys = new Array(13,17,35,30,27);
 		} else if (level == 3) {
 			xs = new Array(53,56,32,61,37,17,5);
