@@ -7,9 +7,12 @@ public class Player extends FlxSprite
 
 	public var state:int = 0; //Normal state. 1 = death
 	public var jumpState:int = 0; //1 = has jumped once
+	public var deathJingle:FlxSound = new FlxSound();
 	public function Player() {
 		super();
-		makeGraphic(15,32,0xff998833);
+		deathJingle.loadStream("res/deathjingle.mp3",false);
+		deathJingle.alive = false;
+		makeGraphic(15,30,0xff998833);
 		maxVelocity.y = 200;
 		velocity.y = 100;
 		acceleration.y = 650;
@@ -52,7 +55,14 @@ public class Player extends FlxSprite
 	}
 
 	public function death():void {
+		if (!deathJingle.alive) {
+			deathJingle.play();
+			deathJingle.alive = true;
+		}
+
 		if (FlxG.keys.Y) { 
+			deathJingle.kill();
+			Registry.nrDeaths += 1;
 			Registry.notesCollected[Registry.houseStage] = 0;
 			FlxG.switchState(new HouseState());
 			Registry.init();

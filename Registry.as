@@ -1,7 +1,7 @@
 package
 {
 import org.flixel.*;
-
+import com.hexagonstar.util.debug.Debug;
 public class Registry {
 
 	public static var player:Player;
@@ -74,6 +74,7 @@ public class Registry {
 		houseHud.add(noteText);
 		houseHud.add(timeText);
 		houseHud.setAll("scrollFactor",new FlxPoint(0,0));
+		
 	}
 
 	public static function restart():void {
@@ -87,13 +88,21 @@ public class Registry {
 	public static function makeNotes(level:int):void {
 		
 		notes = new FlxGroup();
-		if (level == 1 && isNoteStage) {
-			var xs:Array = new Array( 1,36,20,23,30,30,24,20,15,15,19,23,30,36,37,2, 1,5, 1,9);
-			var ys:Array = new Array(28,26,21,21,21,16,16,16,16,13,13,13,13,13,12,9,12,6,17,6);
-			for(var i:int = 0; i < 20; i++) {
-				mn(xs[i],ys[i],i);
-			}
+		var xs:Array;
+		var ys:Array;
+		if (level == 1) {
+			xs = new Array( 1,36,20,23,30,30,24,20,15,15,19,23,30,36,37,2, 1,5, 1,9);
+			ys = new Array(28,26,21,21,21,16,16,16,16,13,13,13,13,13,12,9,12,6,17,6);
+		} 
+
+		if (level == 2) {
+			xs = new Array( 3 ,6 ,9,12,15,22,34,31,32,48,36,48,36,47,48, 3,17,23,28,11);
+			ys = new Array(22,21,22,21,22,11,15,22,28,26,23,19,15, 3, 3, 7, 2, 2, 2, 2);
 		}
+		for(var i:int = 0; i < xs.length; i++) {
+			mn(xs[i],ys[i],i);
+		}
+		Debug.trace("Made notes");
 	}
 //i do the x16 scaling in the note class
 	public static function mn(x:int,y:int,id:int):void {
@@ -109,7 +118,11 @@ public class Registry {
 		} else if (level == 1) {
 			xs = new Array(33,19,24);
 			ys = new Array(3,26,18);
+		} else if (level == 2 && isNoteStage) {
+			xs = new Array(26,38,47,10);
+			ys = new Array(20,28,11,7);
 		}
+		
 		for (var i:int = 0; i< xs.length; i++) {
 			mp(xs[i],ys[i]);
 		}

@@ -1,5 +1,6 @@
 package {
 import org.flixel.*;
+import com.hexagonstar.util.debug.Debug;
 public class Cutscene extends FlxState {
 
 	public var txt:FlxText = new FlxText(0,0,640);
@@ -17,32 +18,14 @@ public class Cutscene extends FlxState {
 	override public function update():void {
 		if (FlxG.keys.justPressed("X"))
 			spaceCt += 1;
-		if (Registry.cutscene == 0) {
-			if (spaceCt == 13) {
-				FlxG.switchState(new HouseState());
-				Registry.restart();
-			}
-		}
-		
+	
 		if (spaceCt == nrLines[Registry.cutscene]) {
 			FlxG.switchState(new HouseState());
+			Debug.trace("hi");
 			Registry.restart();
+		} else {
+			txt.text = dialogues[Registry.cutscene][spaceCt];
 		}
-		if (Registry.cutscene == 1) {	
-			if (spaceCt == 2) { 
-				FlxG.switchState(new HouseState());
-				Registry.restart();
-			}
-		}
-
-		if (Registry.cutscene == 2) {
-			if (spaceCt == 2) {
-				FlxG.switchState(new HouseState());
-				Registry.restart();
-			}
-		}
-
-		txt.text = dialogues[Registry.cutscene][spaceCt];
 	}
 
 	

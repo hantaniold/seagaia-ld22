@@ -3,6 +3,8 @@ package {
 //anxiety or whatever.
 import org.flixel.*;
 public class Pill extends FlxSprite {
+
+	[Embed(source="res/pill.mp3")] public var PillSound:Class;
 	[Embed(source="res/meds.png")] public var PillSprites:Class;
 	public function Pill(_x:int, _y:int) {
 		super();
@@ -17,6 +19,7 @@ public class Pill extends FlxSprite {
 	public function getCollected():void {
 		Registry.pillbar.pillGet()
 		FlxG.shake(0.02);
+		FlxG.play(PillSound);
 		//Sets the timer on the bar thing. 
 		//player polls the bar to change movement or detect death orw hatever
 		kill();

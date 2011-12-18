@@ -9,7 +9,7 @@ public class Pill extends FlxSprite {
 		x = _x;
 		y = _y;
 		loadGraphic(PillSprites,true,true,16,16);
-		addAnimation("pill",[0,1,2,3,4,5],12);
+		addAnimation("pill",[0,1,2,3,4,5],4);
 		play("pill");
 
 	}
