@@ -26,6 +26,7 @@ public class Note extends FlxSprite{
 
 	public function getCollected():void {
 //update note count for a stage
+		FlxG.play(fxArray[int(Math.random() * 5)]);
 		Registry.notesCollected[Registry.houseStage] += 1;
 		
 		Registry.noteText.text = "Notes: "+Registry.notesCollected[Registry.houseStage].toString()+"/20";

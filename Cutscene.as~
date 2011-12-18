@@ -1,6 +1,5 @@
 package {
 import org.flixel.*;
-import com.hexagonstar.util.debug.Debug;
 public class Cutscene extends FlxState {
 
 	public var txt:FlxText = new FlxText(0,0,640);
@@ -8,7 +7,10 @@ public class Cutscene extends FlxState {
 	public var spaceCt:int = 0;
 	public var cutsceneSong:FlxSound = new FlxSound();
 	public var bloop:FlxSound = new FlxSound();
+	
 //Dialogue at bottom/
+	[Embed(source="res/cutscenebossa.mp3")] public var CB:Class;
+	[Embed(source="res/bloop.mp3")] public var Bloop:Class;
 
 	override public function create():void {
 		spaceCt = 0;
@@ -18,15 +20,12 @@ public class Cutscene extends FlxState {
 		ins.text = "Press X!"
 		add(ins);
 		add(txt);	
-		cutsceneSong.loadStream("res/cutscenebossa.mp3",true);
-		bloop.loadStream("res/bloop.mp3",false);
-		cutsceneSong.play();
-		
+		FlxG.play(CB,1,true);		
 	}
 		
 	override public function update():void {
 		if (FlxG.keys.justPressed("X")) {
-			bloop.play();
+			FlxG.play(Bloop,1,false);
 			spaceCt += 1;
 		}
 	

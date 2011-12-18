@@ -1,15 +1,15 @@
 package {
 import org.flixel.*;
-import com.hexagonstar.util.debug.Debug;
 
 public class HouseState extends FlxState {
 	[Embed(source="res/houseBG.png")] public var HouseBG:Class;
 	[Embed(source="res/foo-bg.png")] public var SleepBG:Class;
 	[Embed(source="res/door.png")] public var Door:Class;
+	[Embed(source="res/housetheme.mp3")] public var HouseSong:Class;
+	public static var houseSong:FlxSound = new FlxSound();
 // General setup stuff
 	[Embed(source="res/houseTiles.png")] public var HouseTiles:Class;
-	public static var houseSong:FlxSound = new FlxSound();
-	public var bloop:FlxSound = new FlxSound();
+	[Embed(source="res/bloop.mp3")] public var Bloop:Class;
 	public var exit:FlxSprite; //Exit for day stages
 	public var bed:FlxSprite; //band member location for night stages
 	public var currentMap:FlxTilemap;
@@ -52,7 +52,7 @@ public class HouseState extends FlxState {
 	public var sleep_4:String = new sleep4_CSV();
 //	public var sleep_5:String = new sleep5_CSV();
 	override public function create():void	{
-		houseSong.loadStream("res/housetheme.mp3",true);	
+		houseSong.loadEmbedded(HouseSong,true);
 		houseSong.play();
 		//for debuggin/testing
 		//Registry.isNoteStage = false;
@@ -80,7 +80,7 @@ public class HouseState extends FlxState {
 		add(exit);
 		bed = new FlxSprite();
 		bed.exists =false;
-		bed.makeGraphic(16,32,0xFFABABAB);
+		bed.makeGraphic(32,16,0xFFABABAB);
 		add(bed);
 		currentMap = new FlxTilemap();
 		if (Registry.houseStage == 1) {
@@ -231,13 +231,11 @@ public class HouseState extends FlxState {
 		}
 		if (FlxG.keys.justPressed("Q"))  {
 			Registry.doAutoPause = !Registry.doAutoPause;
-			bloop.loadStream("res/bloop.mp3",false);
-			bloop.play();
+			FlxG.play(Bloop,1,false);
 		}
 
 		if (FlxG.keys.justPressed("P")) {
-			bloop.loadStream("res/bloop.mp3",false);
-			bloop.play();
+			FlxG.play(Bloop,1,false);
 			if (!FlxG.paused) {
 				FlxG.paused = true;
 				pause.exists = true;
