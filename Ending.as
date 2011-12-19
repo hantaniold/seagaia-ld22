@@ -26,8 +26,6 @@ public class Ending extends FlxState{
 		}
 		review.text = "OFFICIAL DITCHPORK REVIEW: 4/25/1990";
 
-		sum = 44;
-		times = 210;
 		if (sum == 0) 
 			review.text += "Davement's newest release is quite the postmodern work of art. It succeeds in managing to show everything about the past 40 years of indie rock, while not having a single note! Their lead man, Duke, shall surely lead the pack. ";
 		if (sum > 0 && sum < 40) {
